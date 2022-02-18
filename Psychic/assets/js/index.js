@@ -27,7 +27,7 @@ function play(){
     let wrongGuessesLetters = wrongGuesses.innerHTML;
     document.onkeyup = function (e){
 
-        if (e.key in letters){
+        if (letters.indexOf(e.key) == -1){
             alert("Please press only letters to play game.");
             play();
         }
