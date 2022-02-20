@@ -6,6 +6,7 @@ var wrongGuesses = document.querySelector(".wrong-guesses");
 var guessesLeft = document.querySelector(".guesses-left");
 var wins = document.querySelector(".wins");
 var loses = document.querySelector(".loses");
+var showSinger = document.querySelector(".random-singer");
 var singers = ['blondie', 'genesis', 'inxs', 'journey', 'madonna', 'metallica', 'poison', 'queen', 'rush', 'toto', 'u2'];
 var singersSongs = {}
 var isReplaced = false;
@@ -24,6 +25,7 @@ function getRandomSinger(){
     for (let i = 0; i < randomSinger.length; i++){
         singerName.innerHTML += "_ ";
     }
+    showSinger.innerHTML = randomSinger;
 }
 
 
