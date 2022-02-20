@@ -5,16 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
     <link rel="stylesheet" href="./assets/css/styles.css">
+    <link rel="stylesheet" href="./assets/css/80s_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Roboto:wght@300&display=swap" rel="stylesheet"> 
 </head>
 <body>
-    <h1>Hangman</h1>
-    <h2>Word to guess : <br><span id="singer-name">_ _ _ _</span></h2>
-    <img class="image-of-singer" src="./assets/images/hangman-boardgame.jpg" alt="hangman">
-    <p>Wrong guesses: <span class="wrong-guesses"></span></p>
-    <p>Guesses left: <span class="guesses-left">9</span></p>
-    <p>Wins: <span class="wins">0</span></p>
-    <p>Loses: <span class="loses">0</span></p>
-    <script src="./assets/js/game.js"></script>
+
+    <div id="wrapper" >
+        <h1 class="chrome">HANGMAN</h1>
+        <h2 class="dreams">80 style</h2>
+    </div>
+
+
+    <div class="container pt-4 mt-4 mw-100">
+        <div class="row d-flex justify-content-around mw-100">
+            <div class="col-lg-5 text-center">
+                <img class="image-of-singer " src="./assets/images/hangman-boardgame.jpg" alt="hangman">
+            </div>
+
+            <div class="col-lg-5 text-center d-flex justify-content-around flex-column w-75 word-guess-div">
+                <h2>Word to guess : <br><span id="singer-name">_ _ _ _</span></h2>
+                <p>Wrong guesses: <span class="wrong-guesses"></span></p>
+                <p>Guesses left: <span class="guesses-left">9</span></p>
+                <p>Wins: <span class="wins">0</span></p>
+                <p>Loses: <span class="loses">0</span></p>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="./assets/js/game.js" text="text/javascript"></script>
 </body>
 </html>

@@ -1,3 +1,10 @@
 img.image-of-singer {
-    width: 100px;
+    width: 75%;
+}
+
+div.word-guess-div {
+    border: 10px dotted white;
+    font-family: 'Permanent Marker', cursive;
+    font-size: 20px;
+    font-weight: normal;
 }
