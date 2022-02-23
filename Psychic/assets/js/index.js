@@ -31,7 +31,6 @@ function playGame(object){
     object.resetData();
     let randomLetter = object.chooseRandomLetter(letters);
     document.onkeyup = function(event){
-        console.log(event.key);
         if (letters.indexOf(event.key) == -1){
             alert("Please press only letters to play game.");
             playGame(object);
@@ -39,7 +38,7 @@ function playGame(object){
             object.wins.innerHTML = parseInt(object.wins.textContent) + 1;
             playGame(object);
         } else{
-            if (object.guessesLeft.textContent == 0){
+            if (object.guessesLeft.textContent == 1){
                 object.loses.innerHTML = parseInt(object.loses.textContent) + 1;
                 playGame(object);
             }
