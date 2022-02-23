@@ -1,57 +1,54 @@
 'use strict';
 
-var wins = document.querySelector(".wins");
-var loses = document.querySelector(".loses");
-var guessesLeft = document.querySelector(".guesses-left");
-var wrongGuesses = document.querySelector(".wrong-guesses");
-var guessedLetter = document.querySelector(".guessed-letter");
+// letters
 var letters = [];
-
 for (let i = "a".charCodeAt(); i <= "z".charCodeAt(); i++){
     letters.push(String.fromCharCode(i));
 }
 
-function randomLetterChoose(){
-    let letter = letters[Math.floor(Math.random()*letters.length)];
-    guessedLetter.innerHTML = letter;
-    return letter;
+// object 
+var data = {
+    wins: document.querySelector(".wins"),
+    loses: document.querySelector(".loses"),
+    guessesLeft: document.querySelector(".guesses-left"),
+    wrongGuesses: document.querySelector(".wrong-guesses"),
+    guessedLetter: document.querySelector(".guessed-letter"),
+    
+    chooseRandomLetter: function(listOfLetters){
+        var randomLetter = listOfLetters[Math.floor(Math.random()*listOfLetters.length)];    
+        this.guessedLetter.innerHTML = randomLetter;
+        return randomLetter;
+    },
+
+    resetData: function(){
+        this.guessesLeft.innerHTML = 9;
+        this.wrongGuesses.innerHTML = "";
+        let random = this.chooseRandomLetter(letters); 
+    } 
 }
 
-function play(){
-    guessesLeft.innerHTML = 9;
-    wrongGuesses.innerHTML = "";
-    let letter = randomLetterChoose();
-    let winNumber = parseInt(wins.textContent); 
-    let loseNumber = parseInt(loses.textContent);
-    let guessesLeftNumber = parseInt(guessesLeft.textContent);
-    let wrongGuessesLetters = wrongGuesses.innerHTML;
-    document.onkeyup = function (e){
-
-        if (letters.indexOf(e.key) == -1){
+function playGame(object){
+    object.resetData();
+    let randomLetter = object.chooseRandomLetter(letters);
+    document.onkeyup = function(event){
+        console.log(event.key);
+        if (letters.indexOf(event.key) == -1){
             alert("Please press only letters to play game.");
-            play();
-        }
-        else if (letter == e.key){
-            winNumber += 1;
-            wins.innerHTML = winNumber;
-            play();
-        }
-        else {
-            guessesLeftNumber -= 1;
-            guessesLeft.innerHTML = guessesLeftNumber;
-            if (wrongGuessesLetters.length == 0){
-                wrongGuessesLetters += e.key;
-            }else {
-                wrongGuessesLetters += " ," + e.key;
+            playGame(object);
+        } else if (event.key == randomLetter){
+            object.wins.innerHTML = parseInt(object.wins.textContent) + 1;
+            playGame(object);
+        } else{
+            if (object.guessesLeft.textContent == 0){
+                object.loses.innerHTML = parseInt(object.loses.textContent) + 1;
+                playGame(object);
             }
-            wrongGuesses.innerHTML = wrongGuessesLetters;
-            if (guessesLeftNumber == 0){
-                loseNumber += 1;
-                loses.innerHTML = loseNumber;
-                play();
+            else{
+                object.guessesLeft.innerHTML = parseInt(object.guessesLeft.textContent) - 1;
+                object.wrongGuesses.innerHTML = object.wrongGuesses.textContent + event.key + ", "; 
             }
         }
     }
 }
 
-play();
+playGame(data);
