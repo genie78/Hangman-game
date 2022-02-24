@@ -1,85 +1,84 @@
-"use strict";
+'use strict';
 
-var singerName = document.getElementById('singer-name');
-var image = document.querySelector(".image-of-singer");
-var wrongGuesses = document.querySelector(".wrong-guesses");
-var guessesLeft = document.querySelector(".guesses-left");
-var wins = document.querySelector(".wins");
-var loses = document.querySelector(".loses");
-var showSinger = document.querySelector(".random-singer");
 var singers = ['blondie', 'genesis', 'inxs', 'journey', 'madonna', 'metallica', 'poison', 'queen', 'rush', 'toto', 'u2'];
-var singersSongs = {}
-var isReplaced = false;
 
-for (let i of singers){
-    singersSongs[i] = 'assets/images/' + i + ".jpg";
-}
-var randomSinger ;
+var hangman = {
+    singerName: document.querySelector("#singer-name"),
+    wrongGuesses: document.querySelector(".wrong-guesses"),
+    guessesLeft: document.querySelector(".guesses-left"),
+    wins: document.querySelector(".wins"),
+    loses: document.querySelector(".loses"),
+    singers: ['blondie', 'genesis', 'inxs', 'journey', 'madonna', 'metallica', 'poison', 'queen', 'rush', 'toto', 'u2'],
+    singersImages: {},
+    randomSinger: document.querySelector(".random-singer"),
+    imageOfSinger: document.querySelector(".image-of-singer"),
+    isletterChanged:false,
 
+    initSingersImages: function(){      
+        for (let i of this.singers){
+            this.singersImages[i] = 'assets/images/' + i + ".jpg";
+        }
+    },
 
-
-function getRandomSinger(){
-    randomSinger = singers[Math.floor(Math.random()*(singers.length -1))];
-    image.src = singersSongs[randomSinger];
-    singerName.innerHTML = "";
-    for (let i = 0; i < randomSinger.length; i++){
-        singerName.innerHTML += "_ ";
-    }
-    showSinger.innerHTML = randomSinger;
-}
-
-
-function play(){
-    getRandomSinger();
-    guessesLeft.innerHTML = randomSinger.length + 5;
-    wrongGuesses.innerHTML = "";
-
-
-    document.onkeyup = function(event){
-        let guessedSinger = ""; 
-        let altSinger = singerName.textContent.split(" ");
-        let altWrongGuesses = wrongGuesses.textContent;
-        let altGuessesLeft = parseInt(guessesLeft.textContent);
-        for (let i = 0; i < randomSinger.length; i ++){
-            if (event.key === randomSinger[i]){
-                guessedSinger += event.key + " ";
-                isReplaced = true;
-            }else {
-                guessedSinger += altSinger[i] + " ";
-            }      
+    chooseRandomSinger: function(){
+        this.initSingersImages();
+        let randomSingerName = singers[Math.floor(Math.random()*singers.length)];
+        this.randomSinger.innerHTML = randomSingerName;
+        this.imageOfSinger.src = this.singersImages[randomSingerName];
+        
+        this.singerName.innerHTML = "";
+        for (let i = 0; i < randomSingerName.length; i++){
+            this.singerName.innerHTML += "_ " 
         }
 
-        if (isReplaced == false){
-            if (altWrongGuesses == ""){
-                altWrongGuesses += event.key;
+        this.guessesLeft.innerHTML = randomSingerName.length + 5;
+    },
+
+    changeLetter: function(event){
+        let singerNameInFunc = "";
+        for (let i = 0;i < this.randomSinger.textContent.length ; i++){
+            if (event == this.randomSinger.textContent[i]){
+                singerNameInFunc += event + " ";
+                this.isletterChanged = true;
             }
             else {
-                altWrongGuesses += ", " + event.key;
+                singerNameInFunc += this.singerName.textContent.split(" ")[i] + " ";
             }
-            altGuessesLeft -= 1;
         }
-        guessesLeft.innerHTML = altGuessesLeft;
+        this.singerName.innerHTML = singerNameInFunc;
+
+        if (this.isletterChanged == false){
+            this.wrongGuesses.innerHTML += event + ",";
+            this.guessesLeft.innerHTML = parseInt(this.guessesLeft.textContent) - 1;
+        }
+
+        this.isletterChanged = false;
+    },
+
+    checkIfWinner: function(){
+        let singerNameText = this.singerName.textContent.split(" ").reduce(
+            function(letter, nextLetter){ 
+                return letter + nextLetter;
+            }
+        );
         
-        isReplaced = false;
-        wrongGuesses.innerHTML = altWrongGuesses;
-        singerName.innerHTML = guessedSinger;
+        if ((this.randomSinger.textContent == singerNameText) && ( parseInt(this.guessesLeft.textContent) > 0) ) {
+            this.wins.innerHTML = parseInt(this.wins.textContent) + 1;
+            this.playGame();
+        }else if ( parseInt(this.guessesLeft.textContent) == 0)  {
+            this.loses.innerHTML = parseInt(this.loses.textContent) + 1;
+            this.playGame();
+        }
+    },
 
-
-        let altSingerToWin = "";
-        for (let i of singerName.textContent.split(" ")){
-            altSingerToWin += i;
-        } 
-
-        let altWins = parseInt(wins.textContent);
-        let altLoses = parseInt( loses.textContent);
-        if ((altSingerToWin != randomSinger) && (altGuessesLeft == 0)){
-            play();
-            loses.innerHTML = altLoses + 1;
-        }else if (altSingerToWin == randomSinger) {
-            play();
-            wins.innerHTML = altWins +1;
+    playGame: function(){
+        this.wrongGuesses.innerHTML = "";
+        this.chooseRandomSinger();
+        document.onkeyup = (event) => {
+            this.changeLetter(event.key);
+            this.checkIfWinner();
         }
     }
 }
 
-play();
+hangman.playGame();
