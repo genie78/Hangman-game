@@ -1,7 +1,3 @@
-'use strict';
-
-var singers = ['blondie', 'genesis', 'inxs', 'journey', 'madonna', 'metallica', 'poison', 'queen', 'rush', 'toto', 'u2'];
-
 var hangman = {
     singerName: document.querySelector("#singer-name"),
     wrongGuesses: document.querySelector(".wrong-guesses"),
@@ -22,7 +18,7 @@ var hangman = {
 
     chooseRandomSinger: function(){
         this.initSingersImages();
-        let randomSingerName = singers[Math.floor(Math.random()*singers.length)];
+        let randomSingerName = this.singers[Math.floor(Math.random()*this.singers.length)];
         this.randomSinger.innerHTML = randomSingerName;
         this.imageOfSinger.src = this.singersImages[randomSingerName];
         
@@ -37,8 +33,8 @@ var hangman = {
     changeLetter: function(event){
         let singerNameInFunc = "";
         for (let i = 0;i < this.randomSinger.textContent.length ; i++){
-            if (event == this.randomSinger.textContent[i]){
-                singerNameInFunc += event + " ";
+            if (event.toLowerCase() == this.randomSinger.textContent[i]){
+                singerNameInFunc += event.toLowerCase() + " ";
                 this.isletterChanged = true;
             }
             else {
@@ -48,7 +44,7 @@ var hangman = {
         this.singerName.innerHTML = singerNameInFunc;
 
         if (this.isletterChanged == false){
-            this.wrongGuesses.innerHTML += event + ",";
+            this.wrongGuesses.innerHTML += event.toLowerCase() + ",";
             this.guessesLeft.innerHTML = parseInt(this.guessesLeft.textContent) - 1;
         }
 
